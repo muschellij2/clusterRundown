@@ -1,0 +1,14 @@
+Package: clusterRundown
+Type: Package
+Title: Gets rundown of cluster resources
+Version: 1.0
+Date: 2014-04-23
+Author: John Muschelli
+Maintainer: John Muschelli <muschellij2@gmail.com>
+Description: Extracts info from qstat -u
+Depends:
+    reshape2,
+    plyr,
+    stringr,
+    zoo
+License: GPL-2

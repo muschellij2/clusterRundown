@@ -1,0 +1,24 @@
+\name{getslot}
+\alias{getslot}
+\title{Get a slot of a vector}
+\usage{
+getslot(x, slot)
+}
+\arguments{
+  \item{x}{Vector/list}
+
+  \item{slot}{numeric slot to grab}
+}
+\value{
+One element of vector/list
+}
+\description{
+Returns the element denoted by slot from object x
+}
+\examples{
+\dontrun{
+l = list(1:5, 1:10, 1:6, rep("hey", 10))
+sapply(l, getslot, 5)
+}
+}
+

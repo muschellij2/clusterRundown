@@ -1,0 +1,20 @@
+\name{get.rundown}
+\alias{get.rundown}
+\title{Get Cluster Rundown}
+\usage{
+get.rundown(username = NULL, all.q = TRUE, std.name = "shared")
+}
+\arguments{
+  \item{username}{Grab a user}
+
+  \item{all.q}{Show all queue information}
+
+  \item{std.name}{name for the "Standard" queue}
+}
+\value{
+List of stuff
+}
+\description{
+Get output of resources and slots begin used by cluster
+}
+
