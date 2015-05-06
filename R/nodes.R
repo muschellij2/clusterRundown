@@ -93,6 +93,7 @@ full.rundown = function(){
   df$h_stack = as.numeric(df$h_stack) / (1000 * 1000)
   df$h_fsize = as.numeric(df$h_fsize) / (1000 * 1000)
   df$h_vmem = as.numeric(df$h_vmem) / (1000 * 1000)
+  df$core_mem_free = df$cores * df$mem_free
   
   user = ddply(df, .(user), function(d){
     n = colSums(d[, c("cores", "mem_free", "h_vmem")], na.rm=TRUE)
