@@ -5,7 +5,6 @@
 #' @param slot numeric slot to grab
 #' @export
 #' @return One element of vector/list
-#' @alias
 #' @examples \dontrun{
 #' l = list(1:5, 1:10, 1:6, rep("hey", 10))
 #' sapply(l, getslot, 5)
@@ -22,7 +21,6 @@ getslot = function(x, slot){
 #' @param std.name name for the "Standard" queue
 #' @export 
 #' @return List of stuff
-#' @alias
 get.rundown = function(username=NULL, all.q = TRUE, std.name = "shared"){
 	out = system('qstat -u "*"', intern=TRUE)
 	out = out[3:length(out)]
