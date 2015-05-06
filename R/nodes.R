@@ -1,12 +1,13 @@
-#' @title Get Cluster Rundown
+#' @title Get Full Cluster Rundown
 #'
 #' @description Get output of resources and slots begin used by cluster
-#' @param username Grab a user
-#' @param all.q Show all queue information
-#' @param std.name name for the "Standard" queue
 #' @export 
+#' @import stringr
+#' @import zoo
+#' @import reshape2
+#' @import plyr
 #' @return List of stuff
-full.rundown = function(username=NULL, all.q = TRUE, std.name = "shared"){
+full.rundown = function(){
   out = system('qstat -u "*" -r', intern=TRUE)
   out = out[3:length(out)]
   out = gsub(" +", " ", out)

@@ -2,16 +2,9 @@
 % Please edit documentation in R/nodes.R
 \name{full.rundown}
 \alias{full.rundown}
-\title{Get Cluster Rundown}
+\title{Get Full Cluster Rundown}
 \usage{
-full.rundown(username = NULL, all.q = TRUE, std.name = "shared")
-}
-\arguments{
-\item{username}{Grab a user}
-
-\item{all.q}{Show all queue information}
-
-\item{std.name}{name for the "Standard" queue}
+full.rundown()
 }
 \value{
 List of stuff
