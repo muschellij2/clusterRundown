@@ -66,6 +66,19 @@ full.rundown = function(username=NULL, all.q = TRUE, std.name = "shared"){
   
   df = merge(all.ids, df, all.x = TRUE, sort = FALSE)
   df = df[ order(df$id), ]
+  df$cores = as.numeric(df$cores)
+  
+  xx = ddply(df, .(queue), function(d){
+    ddply(d, .(user), function(x){
+      c(jobs = length(x$cores), cores = sum(x$cores))
+    })
+  })
+  xx = xx[ xx$jobs > 0,]
+  xx = xx[order(xx$queue, xx$cores, xx$user), ]
+
+  ncores = ddply(df, .(user), function(x){
+    c(jobs = length(x$cores), cores = sum(x$cores))
+  })
   
   return(df)
 }
