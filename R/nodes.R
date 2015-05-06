@@ -94,21 +94,31 @@ full.rundown = function(username=NULL, all.q = TRUE, std.name = "shared"){
   df$h_vmem = as.numeric(df$h_vmem) / (1000 * 1000)
   
   user = ddply(df, .(user), function(d){
-    colSums()
+    n = colSums(d[, c("cores", "mem_free", "h_vmem")], na.rm=TRUE)
+    c(n, jobs = nrow(d))
   })
+  user = user[order(user$mem_free, user$cores, decreasing = TRUE), ]
   
 #   xx = ddply(df, .(queue), function(d){
 #     ddply(d, .(user), function(x){
-#       c(jobs = length(x$cores), cores = sum(x$cores))
+#       n = colSums(x[, c("cores", "mem_free", "h_vmem")], na.rm=TRUE)
+#       c(n, jobs = nrow(x))
 #     })
 #   })
 #   xx = xx[ xx$jobs > 0,]
-#   xx = xx[order(xx$queue, xx$cores, xx$user), ]
+#   xx$queue = gsub("[.]q", "", xx$queue)
+#   xx = reshape(xx, 
+#                idvar = "user",
+#                direction = "wide",
+#                timevar = "queue", 
+#                times = unique(df$queue)),
+#                v.names = "value")
+# 
 # 
 #   ncores = ddply(df, .(user), function(x){
 #     c(jobs = length(x$cores), cores = sum(x$cores))
 #   })
-  
-  return(df)
+#   
+  return(list(rundown = df, user = user))
 }
 
