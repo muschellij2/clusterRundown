@@ -101,6 +101,16 @@ full.rundown = function(){
   })
   user = user[order(user$mem_free, user$cores, decreasing = TRUE), ]
   
+  if (c("shared.q") %in% df$queue){
+    shared = ddply(df[ df$queue %in% c("shared.q"), , drop=FALSE], 
+                   .(user), function(d){
+      n = colSums(d[, c("cores", "mem_free", "h_vmem")], na.rm=TRUE)
+      c(n, jobs = nrow(d))
+    })
+    shared = shared[order(shared$mem_free, shared$cores, decreasing = TRUE), ]
+  } else {
+    shared = NULL
+  }
 #   xx = ddply(df, .(queue), function(d){
 #     ddply(d, .(user), function(x){
 #       n = colSums(x[, c("cores", "mem_free", "h_vmem")], na.rm=TRUE)
@@ -121,6 +131,6 @@ full.rundown = function(){
 #     c(jobs = length(x$cores), cores = sum(x$cores))
 #   })
 #   
-  return(list(rundown = df, user = user))
+  return(list(rundown = df, user = user, shared = shared))
 }
 

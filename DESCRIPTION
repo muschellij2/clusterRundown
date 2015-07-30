@@ -11,4 +11,4 @@ Depends:
     plyr,
     stringr,
     zoo
-License: GPL-2
+License: GPL-3
