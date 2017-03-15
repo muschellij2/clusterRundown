@@ -8,22 +8,37 @@
 #' @import plyr
 #' @return List of stuff
 full.rundown = function(){
-  out = system('qstat -u "*" -r', intern=TRUE)
+  out = system('qstat -u "*" -r', intern = TRUE)
   out = out[3:length(out)]
   out = gsub(" +", " ", out)
   out = str_trim(out)
   
   df = data.frame(x = out, stringsAsFactors = FALSE)
-  df$job = grepl("^\\d{7}", df$x)
+  df$job = grepl("^\\d{4,7}", df$x)
   df$id = cumsum(df$job)
   df = df[ !grepl("Master Queue:", df$x), ]
-  df = df[ !grepl("Full jobname:", df$x), ]
+  df$is_jobname = grepl("Full jobname:", df$x)
+  
+  
+  df$job_id = NA
+  df$job_id[ df$job ] = gsub("^(\\d{4,7}).*", "\\1", df$x[df$job])
+  df$job_id = na.locf(df$job_id)
+  
+  
+  df$jobname = NA
+  df$jobname[ df$is_jobname ] = gsub("Full jobname:(.*)", "\\1", 
+                                     df$x[df$is_jobname])
+  jn = df[ !is.na(df$jobname), c("id", "job_id", "jobname")]
+  df$jobname = NULL
+  
+  df = df[ !df$is_jobname, ]
+  df$is_jobname = NULL
   
   df = ddply(df, .(id), function(d){
     xx = d$x[1]
     ss = strsplit(xx, " ")
-    d$status = sapply(ss, getslot, slot=5)
-    d$user = sapply(ss, getslot, slot=4)
+    d$status = sapply(ss, getslot, slot = 5)
+    d$user = sapply(ss, getslot, slot = 4)
     d$queue = gsub(".* (.*)@.*", "\\1", xx)
     d$cores = sapply(ss, getslot, slot=9)
     if (nrow(d) > 1){
@@ -74,6 +89,8 @@ full.rundown = function(){
                v.names = "value")
   colnames(df) = gsub("value[.]", "", colnames(df))
   df = merge(all.ids, df, all.x = TRUE, sort = FALSE)
+  df = merge(df, jn, all.x = TRUE, sort = FALSE)
+  
   df = df[ order(df$id), ]
   df$cores = as.numeric(df$cores)
   cn = colnames(df)
