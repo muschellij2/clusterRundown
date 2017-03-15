@@ -5,11 +5,12 @@ Version: 1.1
 Date: 2017-03-15
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
-Description: Extracts info from qstat -u
+Description: Extracts info from qstat for an 'SGE' cluster.
 Depends:
     reshape2,
     plyr,
     stringr,
-    zoo
+    zoo,
+    stats
 License: GPL-3
 RoxygenNote: 6.0.1

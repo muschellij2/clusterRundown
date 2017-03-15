@@ -7,6 +7,7 @@
 #' @import reshape2
 #' @import plyr
 #' @return List of stuff
+#' @importFrom stats reshape
 full.rundown = function(){
   out = system('qstat -u "*" -r', intern = TRUE)
   out = out[3:length(out)]

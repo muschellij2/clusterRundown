@@ -75,6 +75,10 @@ get.rundown = function(username=NULL, all.q = TRUE, std.name = "shared"){
 #' @export
 #' @return List of stuff 
 get.resource = function(username=NULL){
+  # ridding of notes
+  queue = NULL
+  rm(list = "queue")
+  
   if (is.null(username)) username = "*"
   out = system(paste0('qstat -u "', username, '" -F'), intern=TRUE)
   out = out[2:length(out)]
