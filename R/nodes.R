@@ -15,14 +15,14 @@ full.rundown = function(){
   out = str_trim(out)
   
   df = data.frame(x = out, stringsAsFactors = FALSE)
-  df$job = grepl("^\\d{4,7}", df$x)
+  df$job = grepl("^\\d{4,8}", df$x)
   df$id = cumsum(df$job)
   df = df[ !grepl("Master Queue:", df$x), ]
   df$is_jobname = grepl("Full jobname:", df$x)
   
   
   df$job_id = NA
-  df$job_id[ df$job ] = gsub("^(\\d{4,7}).*", "\\1", df$x[df$job])
+  df$job_id[ df$job ] = gsub("^(\\d{4,8}).*", "\\1", df$x[df$job])
   df$job_id = na.locf(df$job_id)
   
   
