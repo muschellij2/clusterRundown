@@ -1,6 +1,7 @@
 #' @title Get Full Cluster Rundown
 #'
 #' @description Get output of resources and slots begin used by cluster
+#' @param blameGame logical, should return real names and emails?
 #' @export 
 #' @import stringr
 #' @import zoo
