@@ -131,3 +131,23 @@ get.resource = function(username=NULL){
 		byqueue = agg))
 }
 
+#' @title Match alias to name and email
+#'
+#' @description Converts alias to name and email
+#' @param username Used if you want to see a specific user usage
+#' @export
+#' @return vector of stuff
+unmask.bandit = function(username) {
+	fields = c("UID", "Name", "Email")
+
+	out = system(paste('jhpce-email', username), intern=TRUE)
+	out = str_trim(out)
+	outList = strsplit(out, "    ")
+	outList = lapply(outList, str_trim)
+	out = unlist(outList)
+	out = out[out!=""]
+	nam = sapply(strsplit(out, ":"), "[", 1)
+	dat = str_trim(sapply(strsplit(out, ":"), "[", 2))
+	names(dat) = nam
+	return(dat[fields])
+}
