@@ -1,7 +1,7 @@
 Package: clusterRundown
 Type: Package
 Title: Gets rundown of cluster resources
-Version: 1.1
+Version: 1.2
 Date: 2017-03-15
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
