@@ -4,7 +4,10 @@
 \alias{full.rundown}
 \title{Get Full Cluster Rundown}
 \usage{
-full.rundown()
+full.rundown(blameGame = FALSE)
+}
+\arguments{
+\item{blameGame}{logical, should return real names and emails?}
 }
 \value{
 List of stuff
