@@ -1,6 +1,7 @@
 #' @title Get Full Cluster Rundown
 #'
 #' @description Get output of resources and slots begin used by cluster
+#' @param blameGame logical, should return real names and emails?
 #' @export 
 #' @import stringr
 #' @import zoo
@@ -8,7 +9,7 @@
 #' @import plyr
 #' @return List of stuff
 #' @importFrom stats reshape
-full.rundown = function(){
+full.rundown = function(blameGame = FALSE){
   out = system('qstat -u "*" -r', intern = TRUE)
   out = out[3:length(out)]
   out = gsub(" +", " ", out)
@@ -129,7 +130,15 @@ full.rundown = function(){
   } else {
     shared = NULL
   }
-#   xx = ddply(df, .(queue), function(d){
+  
+  ## add names
+  if(blameGame) {
+	  realUsers = t(sapply(user$user, unmask.bandit))
+	  realUsers = as.data.frame(realUsers, stringsAsFactors=FALSE)
+	  user$name = realUsers$Name[match(user$user, realUsers$UID)]
+	  user$email = realUsers$Email[match(user$user, realUsers$UID)]
+  }
+  #   xx = ddply(df, .(queue), function(d){
 #     ddply(d, .(user), function(x){
 #       n = colSums(x[, c("cores", "mem_free", "h_vmem")], na.rm=TRUE)
 #       c(n, jobs = nrow(x))
