@@ -25,7 +25,7 @@ get.rundown = function(username=NULL, all.q = TRUE, std.name = "shared"){
 	out = system('qstat -u "*"', intern=TRUE)
 	out = out[3:length(out)]
 	out = gsub(" +", " ", out)
-	out = str_trim(out)
+	out = trimws(out)
 
 	### keep only ones that are running
 	ss = strsplit(out, " ")
@@ -74,6 +74,7 @@ get.rundown = function(username=NULL, all.q = TRUE, std.name = "shared"){
 #' @param username Used if you want to see a specific user usage
 #' @export
 #' @return List of stuff 
+#' @importFrom reshape2 dcast
 get.resource = function(username=NULL){
   # ridding of notes
   queue = NULL
@@ -120,7 +121,7 @@ get.resource = function(username=NULL){
 
 	agg = wide[ ,!colnames(wide) %in% "node"]
 	agg = ddply(.data=agg, 
-		.(queue), function(x) {
+		~ queue, function(x) {
 			colSums(x[ ,!colnames(x) %in% "queue"], na.rm=TRUE)
 		})
 
@@ -141,13 +142,13 @@ unmask.bandit = function(username) {
 	fields = c("UID", "Name", "Email")
 
 	out = system(paste('jhpce-email', username), intern=TRUE)
-	out = str_trim(out)
+	out = trimws(out)
 	outList = strsplit(out, "    ")
-	outList = lapply(outList, str_trim)
+	outList = lapply(outList, trimws)
 	out = unlist(outList)
 	out = out[out!=""]
 	nam = sapply(strsplit(out, ":"), "[", 1)
-	dat = str_trim(sapply(strsplit(out, ":"), "[", 2))
+	dat = trimws(sapply(strsplit(out, ":"), "[", 2))
 	names(dat) = nam
 	return(dat[fields])
 }

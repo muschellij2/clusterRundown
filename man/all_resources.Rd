@@ -6,6 +6,9 @@
 \usage{
 all_resources()
 }
+\value{
+\code{data.frame} of values for each person
+}
 \description{
 Get output of resources and slots begin used by cluster
 }

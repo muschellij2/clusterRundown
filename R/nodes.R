@@ -3,17 +3,15 @@
 #' @description Get output of resources and slots begin used by cluster
 #' @param blameGame logical, should return real names and emails?
 #' @export 
-#' @import stringr
-#' @import zoo
-#' @import reshape2
-#' @import plyr
+#' @importFrom zoo na.locf
+#' @importFrom plyr ddply
 #' @return List of stuff
 #' @importFrom stats reshape
 full.rundown = function(blameGame = FALSE){
   out = system('qstat -u "*" -r', intern = TRUE)
   out = out[3:length(out)]
   out = gsub(" +", " ", out)
-  out = str_trim(out)
+  out = trimws(out)
   
   df = data.frame(x = out, stringsAsFactors = FALSE)
   df$job = grepl("^\\d{4,8}", df$x)
@@ -24,7 +22,7 @@ full.rundown = function(blameGame = FALSE){
   
   df$job_id = NA
   df$job_id[ df$job ] = gsub("^(\\d{4,8}).*", "\\1", df$x[df$job])
-  df$job_id = na.locf(df$job_id)
+  df$job_id = zoo::na.locf(df$job_id)
   
   
   df$jobname = NA
@@ -36,7 +34,7 @@ full.rundown = function(blameGame = FALSE){
   df = df[ !df$is_jobname, ]
   df$is_jobname = NULL
   
-  df = ddply(df, .(id), function(d){
+  df = ddply(df, ~ id, function(d){
     xx = d$x[1]
     ss = strsplit(xx, " ")
     d$status = sapply(ss, getslot, slot = 5)
@@ -51,7 +49,7 @@ full.rundown = function(blameGame = FALSE){
   
   df = df[ df$status %in% "r", ]
   
-  all.ids = ddply(df, .(id), function(d){
+  all.ids = ddply(df, ~ id, function(d){
     d$x = NULL
     d[1,, drop = FALSE]
   })
@@ -61,11 +59,11 @@ full.rundown = function(blameGame = FALSE){
   #################  
   df$obj = gsub("(.*):.*", "\\1", df$x)
   df$obj[!grepl(":", df$x)] = NA
-  df$obj = na.locf(df$obj)
+  df$obj = zoo::na.locf(df$obj)
   df$x = gsub("(.*):(.*)", "\\2", df$x)
   df = df[ !df$x %in% "", ]
   df$x = gsub("(0.000000)", "", df$x, fixed = TRUE)
-  df$x = str_trim(df$x)
+  df$x = trimws(df$x)
   
   df = df[ grepl("=", df$x), ]
   df$resource = gsub("(.*)=(.*)", "\\1", df$x)
@@ -114,7 +112,7 @@ full.rundown = function(blameGame = FALSE){
   df$h_vmem = as.numeric(df$h_vmem) / (1000 * 1000)
   df$core_mem_free = df$cores * df$mem_free
   
-  user = ddply(df, .(user), function(d){
+  user = ddply(df, ~ user, function(d){
     n = colSums(d[, c("cores", "mem_free", "h_vmem")], na.rm=TRUE)
     c(n, jobs = nrow(d))
   })
@@ -122,7 +120,7 @@ full.rundown = function(blameGame = FALSE){
   
   if (c("shared.q") %in% df$queue){
     shared = ddply(df[ df$queue %in% c("shared.q"), , drop=FALSE], 
-                   .(user), function(d){
+                   ~ user, function(d){
       n = colSums(d[, c("cores", "mem_free", "h_vmem")], na.rm=TRUE)
       c(n, jobs = nrow(d))
     })
@@ -138,8 +136,8 @@ full.rundown = function(blameGame = FALSE){
 	  user$name = realUsers$Name[match(user$user, realUsers$UID)]
 	  user$email = realUsers$Email[match(user$user, realUsers$UID)]
   }
-  #   xx = ddply(df, .(queue), function(d){
-#     ddply(d, .(user), function(x){
+  #   xx = ddply(df, ~ queue, function(d){
+#     ddply(d, ~ user, function(x){
 #       n = colSums(x[, c("cores", "mem_free", "h_vmem")], na.rm=TRUE)
 #       c(n, jobs = nrow(x))
 #     })
@@ -154,7 +152,7 @@ full.rundown = function(blameGame = FALSE){
 #                v.names = "value")
 # 
 # 
-#   ncores = ddply(df, .(user), function(x){
+#   ncores = ddply(df, ~ user, function(x){
 #     c(jobs = length(x$cores), cores = sum(x$cores))
 #   })
 #   
