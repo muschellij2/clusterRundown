@@ -6,7 +6,7 @@ Date: 2017-04-03
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
 Description: Extracts info from qstat for an 'SGE' cluster.
-Import:
+Imports:
     reshape2,
     plyr,
     zoo,
