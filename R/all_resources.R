@@ -19,7 +19,7 @@ all_resources = function(){
   rownames(df) = NULL
   
   dd = split(df, df$index)
-  idf = dd[[7]]
+  # idf = dd[[1]]
   
   drop_fields = c("error reason")
   i = 1
