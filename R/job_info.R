@@ -12,7 +12,7 @@
 #'
 #' @examples
 #' \dontrun{
-#' job_info("6684455")
+#' res = job_info("6684455")
 #' }
 job_info = function(job_id, last_days = 100, verbose = TRUE) {
   value = variable = marker = marker_id = NULL
@@ -23,7 +23,7 @@ job_info = function(job_id, last_days = 100, verbose = TRUE) {
   status = attr(x, "status")
   if (status > 0) {
     if (verbose) {
-      message("Job not found. Searching previus accounting logs")
+      message("Job not found. Searching previous accounting logs")
     }
     search_str = paste0(':', job_id, ':')
     cmd2 = paste0(
