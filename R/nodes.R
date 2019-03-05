@@ -45,14 +45,14 @@ full.rundown = function(blameGame = FALSE){
       d = d[seq(2, nrow(d)),]
     }
     d
-  }) 
+  }, .progress = "text") 
   
   df = df[ df$status %in% "r", ]
   
   all.ids = ddply(df, ~ id, function(d){
     d$x = NULL
     d[1,, drop = FALSE]
-  })
+  }, .progress = "text")
   
   #################
   # Getting Resource List

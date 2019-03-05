@@ -1,3 +1,6 @@
+^get_qmem\.R$
+^R/get_qmem\.R$
+^R/\.Rhistory$
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^\.travis\.yml$

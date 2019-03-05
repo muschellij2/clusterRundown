@@ -1,8 +1,8 @@
 Package: clusterRundown
 Type: Package
 Title: Gets rundown of cluster resources
-Version: 1.4
-Date: 2017-04-03
+Version: 1.5
+Date: 2019-03-05
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
 Description: Extracts info from qstat for an 'SGE' cluster.
@@ -13,6 +13,8 @@ Imports:
     stats,
     tidyr,
     dplyr,
+    tibble,
     data.table
 License: GPL-3
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
+Encoding: UTF-8
