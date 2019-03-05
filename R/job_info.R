@@ -15,8 +15,8 @@
 #' res = job_info("6684455")
 #' }
 job_info = function(job_id, last_days = 100, verbose = TRUE) {
-  value = variable = marker = marker_id = NULL
-  rm(list = c("value", "variable", "marker", "marker_id"))
+  maxvmem = value = variable = marker = marker_id = NULL
+  rm(list = c("value", "variable", "marker", "marker_id", "maxvmem"))
   cmd = paste0("qacct -j ", job_id)
   
   x = system(cmd, intern = TRUE)
@@ -67,5 +67,12 @@ job_info = function(job_id, last_days = 100, verbose = TRUE) {
   job_info = job_info %>% 
     select(marker_id, variable, value) %>% 
     spread(key = variable, value = value)
+  if (nrow(job_info) > 0 & "maxvmem" %in% colnames(job_info)) {
+    job_info = job_info %>% 
+      mutate(mv = gsub("G|M", "", maxvmem),
+             mv = as.numeric(mv),
+             max_vmem_gb = ifelse(grepl("M", maxvmem), mv / 1000, mv)) %>% 
+      select(-mv)
+  }
   return(job_info)
 }

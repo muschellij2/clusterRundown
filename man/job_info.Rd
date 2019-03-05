@@ -22,6 +22,6 @@ Get Job Information on Cluster
 }
 \examples{
 \dontrun{
-job_info("6684455")
+res = job_info("6684455")
 }
 }
