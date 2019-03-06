@@ -21,32 +21,34 @@ job_info = function(job_id, last_days = 100, verbose = TRUE) {
   
   x = system(cmd, intern = TRUE)
   status = attr(x, "status")
-  if (status > 0) {
-    if (verbose) {
-      message("Job not found. Searching previous accounting logs")
-    }
-    search_str = paste0(':', job_id, ':')
-    cmd2 = paste0(
-      'grep -l "', search_str, 
-      '" ', 
-      "/cm/shared/apps/sge/var/default/common/accounting*.txt")
-    files = system(cmd2, intern = TRUE)
-    files = unique(files)
-    if (length(files) == 0) {
-      stop("No data returned for job")
-    }
-    ccmds = paste0("qacct -j ", job_id, " -f ", files)
-    if (!is.null(last_days)) {
-      if (is.finite(last_days)) {
-        ccmds = paste0(ccmds, " -d ", last_days)
+  if (!is.null(status)) {
+    if (status > 0) {
+      if (verbose) {
+        message("Job not found. Searching previous accounting logs")
       }
+      search_str = paste0(':', job_id, ':')
+      cmd2 = paste0(
+        'grep -l "', search_str, 
+        '" ', 
+        "/cm/shared/apps/sge/var/default/common/accounting*.txt")
+      files = system(cmd2, intern = TRUE)
+      files = unique(files)
+      if (length(files) == 0) {
+        stop("No data returned for job")
+      }
+      ccmds = paste0("qacct -j ", job_id, " -f ", files)
+      if (!is.null(last_days)) {
+        if (is.finite(last_days)) {
+          ccmds = paste0(ccmds, " -d ", last_days)
+        }
+      }
+      x = lapply(ccmds, function(cmd) {
+        x = system(cmd, intern = TRUE)
+        status = attr(x, "status")
+        return(x)
+      })
+      x = unlist(x)
     }
-    x = lapply(ccmds, function(cmd) {
-      x = system(cmd, intern = TRUE)
-      status = attr(x, "status")
-      return(x)
-    })
-    x = unlist(x)
   }
   
   job_info = tibble::tibble(x = x) %>% 
