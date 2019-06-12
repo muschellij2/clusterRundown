@@ -14,5 +14,7 @@ If no tasks, \code{\link{NULL}}, otherwise a
 Get Tasks in Error
 }
 \examples{
+\dontrun{
 get_error_tasks()
+}
 }

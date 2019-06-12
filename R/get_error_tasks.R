@@ -5,7 +5,9 @@
 #' @export
 #'
 #' @examples
+#' \dontrun{
 #' get_error_tasks()
+#' }
 get_error_tasks = function() {
   x = system("qstat", intern = TRUE)
   err = grepl("Eqw", x)
