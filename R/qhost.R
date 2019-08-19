@@ -14,13 +14,17 @@ qhost = function() {
   df$id = cumsum(df$job)
   id_df = df[ df$job, ]
   id_df$x = gsub("\\s+", " ", id_df$x)
-  id_df = tidyr::separate(id_df, col = x, 
-                          into = c("node", "architecture", "cores", "load", 
-                                   "total_memory", "used_memory", "total_swapspace", 
-                                   "used_swapspace"), 
-                       sep = " ")
+  id_df = tidyr::separate(
+    id_df, col = x, 
+    into = c("node", "architecture", "cores", "load", 
+             "total_memory", "used_memory", "total_swapspace", 
+             "used_swapspace"), 
+    sep = " ")
   for (icol in colnames(id_df)) {
-    id_df[[icol]][ id_df[[icol]] %in% c("-", "-")] = NA_character_
+    bad = id_df[[icol]] %in% c("-", "-")
+    # if (any(bad)) {
+      id_df[[icol]][ bad ] = NA
+    # }
   }
   id_df$load[ is.na(id_df$load)] = 0
   id_df$load = as.numeric(id_df$load)
