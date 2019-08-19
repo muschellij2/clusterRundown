@@ -16,7 +16,7 @@ qhost = function() {
   id_df$x = gsub("\\s+", " ", id_df$x)
   id_df = tidyr::separate(
     id_df, col = x, 
-    into = c("node", "architecture", "cores", "load", 
+    into = c("node", "architecture", "number_of_cores", "load", 
              "total_memory", "used_memory", "total_swapspace", 
              "used_swapspace"), 
     sep = " ")
@@ -28,7 +28,7 @@ qhost = function() {
   }
   id_df$load[ is.na(id_df$load)] = 0
   id_df$load = as.numeric(id_df$load)
-  id_df$cores = as.numeric(id_df$cores)
+  id_df$number_of_cores = as.numeric(id_df$number_of_cores)
   
   df = df[ !df$job, ]
   
@@ -45,6 +45,6 @@ qhost = function() {
   
   df = dplyr::left_join(id_df, df)
   
-  id_df$bad = id_df$load > id_df$cores
+  id_df$bad = id_df$load > id_df$number_of_cores
   return(list(df = df, node_df = id_df))
 }
