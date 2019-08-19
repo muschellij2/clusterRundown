@@ -39,7 +39,7 @@ full.rundown = function(blameGame = FALSE){
     ss = strsplit(xx, " ")
     d$status = sapply(ss, getslot, slot = 5)
     d$user = sapply(ss, getslot, slot = 4)
-    d$compute = gsub(".* .*@(compute-.*)\\s*.*", "\\1", xx)
+    d$compute = gsub(".* .*@((transfer|compute)-.*)\\s*.*", "\\1", xx)
     d$queue = gsub(".* (.*)@.*", "\\1", xx)
     d$cores = sapply(ss, getslot, slot=9)
     if (nrow(d) > 1){
@@ -48,7 +48,7 @@ full.rundown = function(blameGame = FALSE){
     d
   }, .progress = "text") 
   
-  df$compute = sub("(compute-\\d*)(.cm.|)cluste\\s*.*", 
+  df$compute = sub("((compute|transfer)-\\d*)(.cm.|).*\\s*.*", 
                    "\\1", df$compute)
   
   df = df[ df$status %in% "r", ]
