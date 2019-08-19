@@ -15,8 +15,9 @@
 #' res = job_info("6684455")
 #' }
 job_info = function(job_id, last_days = 100, verbose = TRUE) {
-  maxvmem = value = variable = marker = marker_id = NULL
-  rm(list = c("value", "variable", "marker", "marker_id", "maxvmem"))
+  mv = maxvmem = value = variable = marker = marker_id = NULL
+  rm(list = c("value", "variable", "marker", "marker_id", "maxvmem",
+              "mv"))
   cmd = paste0("qacct -j ", job_id)
   
   x = system(cmd, intern = TRUE)

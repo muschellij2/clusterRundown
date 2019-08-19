@@ -9,6 +9,12 @@
 #' get_error_tasks()
 #' }
 get_error_tasks = function() {
+  from = job_id = mutate_at = NULL
+  task_id = task_key = tasks = to = NULL
+  rm(list = c("from", "job_id", "mutate_at", 
+              "task_id",
+              "task_key", "tasks", "to"))
+  
   x = system("qstat", intern = TRUE)
   err = grepl("Eqw", x)
   if (!any(err)) {
