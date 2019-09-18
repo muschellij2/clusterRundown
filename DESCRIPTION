@@ -1,11 +1,21 @@
 Package: clusterRundown
 Type: Package
-Title: Gets rundown of cluster resources
-Version: 1.6
-Date: 2019-03-05
-Author: John Muschelli
-Maintainer: John Muschelli <muschellij2@gmail.com>
-Description: Extracts info from qstat for an 'SGE' cluster.
+Title: Rundown of Cluster Resources
+Version: 1.7
+Date: 2019-09-18
+Authors@R: c(
+    person(given = "John",
+           family = "Muschelli",
+           email = "muschellij2@gmail.com",
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-6469-1750")),
+    person(given = "Andrew",
+           family = "Jaffe",
+           role = c("aut"))
+    )
+Description: Extracts info from jobs and other diagnostics for an 
+    Sun Grid Engine ('SGE') cluster.  These scripts were specifically for 
+    the 'JHPCE' cluster.
 Imports:
     reshape2,
     plyr,
@@ -14,7 +24,8 @@ Imports:
     tidyr,
     dplyr,
     tibble,
-    data.table
+    data.table,
+    fansi
 License: GPL-3
 RoxygenNote: 6.1.1
 Encoding: UTF-8
