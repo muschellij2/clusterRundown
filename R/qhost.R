@@ -3,6 +3,8 @@
 #' @return A list of \code{data.frame}s about the nodes
 #' @export
 qhost = function() {
+  x = NULL
+  rm(list= "x")
   out = system("qhost -F", intern = TRUE)
   out = out[4:length(out)]
   

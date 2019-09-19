@@ -13,5 +13,7 @@ A \code{tibble}
 Get a Picture of the Queue
 }
 \examples{
+if (Sys.which("qpic") != "") {
 qpic()
+}
 }

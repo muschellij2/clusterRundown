@@ -5,7 +5,9 @@
 #'
 #' @importFrom fansi strip_sgr
 #' @examples
+#' if (Sys.which("qpic") != "") {
 #' qpic()
+#' }
 qpic = function() {
   x = system("qpic", intern = TRUE)
   x = fansi::strip_sgr(x)
@@ -37,3 +39,4 @@ qpic = function() {
   res = readr::read_delim(tfile, delim = " ", col_names = hdr)
   return(res)
 }
+
