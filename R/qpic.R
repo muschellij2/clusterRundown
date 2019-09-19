@@ -32,9 +32,9 @@ qpic = function() {
   xx = gsub("\\|", "", xx)
   xx = gsub(" - ", "  ", xx)
   squish = function(x) {
-    trimws(gsub("\\+", " ", x))
+    trimws(gsub("\\s+", " ", x))
   }
-  xx = squish(x)
+  xx = squish(xx)
   writeLines(xx, tfile,  sep = "\n")
   res = readr::read_delim(tfile, delim = " ", col_names = hdr)
   return(res)
