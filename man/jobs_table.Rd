@@ -4,7 +4,10 @@
 \alias{jobs_table}
 \title{Run Table of jobs}
 \usage{
-jobs_table()
+jobs_table(sort = TRUE)
+}
+\arguments{
+\item{sort}{sort the data}
 }
 \description{
 Run Table of jobs
